@@ -61,6 +61,12 @@ This allows the usage of =FDTDIR= in extlinux.conf, and should be set via
   setenv fdtfile freescale/fsl-lx2160a-cex7.dtb
 #+END_EXAMPLE
 
+OR, if you have a newer kernel,
+
+#+BEGIN_EXAMPLE
+  setenv fdtfile freescale/fsl-lx2160a-honeycomb.dtb
+#+END_EXAMPLE
+
 *** scriptaddr leaves 4k for extlinux.conf
 
 This is very easy to overrun in NixOS, and results in the ethernet
