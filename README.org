@@ -50,7 +50,7 @@ configuration, so everything should work with no additional effort.*
 This causes ramdisk loading to fail. Set this explicitly via =setenv=
 
 #+BEGIN_EXAMPLE
-  setenv ramdisk_addr_r 83900000
+  setenv ramdisk_addr_r 84000000
 #+END_EXAMPLE
 
 *** fdtfile unset
@@ -83,7 +83,7 @@ This can be set to only scan the device you want to boot.
 
 #+BEGIN_EXAMPLE
   setenv scriptaddr 0x83800000
-  setenv ramdisk_addr_r 83900000
+  setenv ramdisk_addr_r 84000000
   setenv fdtfile freescale/fsl-lx2160a-cex7.dtb
   setenv boot_targets nvme0
 #+END_EXAMPLE
