@@ -1,7 +1,8 @@
-{ stdenv, lib, fetchgit, uboot, rcw, openssl,
+{ stdenv, lib, fetchFromGitHub, uboot, rcw, openssl,
   ddrSpeed ? 3200,
   serdes ? "8_5_2",
   bootMode ? "sd",
+  bl33 ? "${uboot}/u-boot.bin",
 }:
 
 assert lib.elem ddrSpeed [ 2400 2600 2900 3200 ];
@@ -15,24 +16,23 @@ in
 
 stdenv.mkDerivation rec {
   pname = "atf";
-  version = "LSDK-19.09";
+  version = "unstable-2020-08-31";
 
-  src = fetchgit {
-    url = "https://source.codeaurora.org/external/qoriq/qoriq-components/atf";
-    rev = "refs/tags/${version}";
-    sha256 = "1jskw423il746pr1aaw4d2m2s0hg9f3fw4zir950alwvy1a4a8bd";
+  src = fetchFromGitHub {
+    owner = "SolidRun";
+    repo = "arm-trusted-firmware";
+    rev = "ed25defc9847c1159574e5efa84b4ddf208e3f74";
+    sha256 = "0j4gw05ppqkz2l98d6fqpq2agjgl93q7b6m6zs1nwn0gb6s33rwc";
   };
 
-  patches = [
-    ../patches/atf/0001-plat-nxp-Add-lx2160acex7-module-support.patch
-  ];
+  enableParallelBuilding = true;
 
   buildInputs = [ openssl ];
 
   makeFlags = [
     "PLAT=lx2160acex7"
-    "BL33=${uboot}/u-boot.bin"
-    "RCW=${rcw}/lx2160acex7/XGGFF_PP_HHHH_RR_19_5_2/rcw_${speed}_${serdes}_${bootMode}.bin"
+    "BL33=${bl33}"
+    "RCW=${rcw}/lx2160acex7/rcws/rcw_lx2160acex7.bin"
     "TRUSTED_BOARD_BOOT=0"
     "GENERATE_COT=0"
     "BOOT_MODE=${atfBoot}"

@@ -1,29 +1,29 @@
-{ stdenv, lib, fetchgit, python3 }:
+{ stdenv, lib, fetchFromGitHub, python3, gettext }:
 
 stdenv.mkDerivation rec {
   pname = "rcw";
-  version = "LSDK-19.09";
+  version = "LSDK-20.04-sr";
 
-  src = fetchgit {
-    url = "https://source.codeaurora.org/external/qoriq/qoriq-components/rcw";
-    rev = "refs/tags/${version}";
-    sha256 = "1c36p2r2pldzakqqjrxwnil6637nsccdfc7sh1bq29b6l8s8z37g";
+  src = fetchFromGitHub {
+    owner = "SolidRun";
+    repo = "rcw";
+    rev = "be11b24dd0c05a10c85bf48bd804afa652458460";
+    sha256 = "029qmic9r0gjs4zdsqyyyi4my108i95mjln4la59ml6m5y8mwjfw";
   };
 
-  patches = [
-    ../patches/rcw/0001-lx2160acex7-misc-RCW-files.patch
-    ../patches/rcw/0002-Set-io-pads-as-GPIO.patch
-    ../patches/rcw/0003-S2-enable-gen3-xspi-increase-divisor-to-28.patch
-  ];
-
-  nativeBuildInputs = [ python3 ];
+  nativeBuildInputs = [ python3 gettext ];
 
   preBuild = ''
     cd lx2160acex7
+    (
+    export SP1=8 SP2=5 SP3=2 SRC1=1 SCL1=2 SPD1=1 CPU=22 SYS=14 MEM=29
+    envsubst < configs/lx2160a_serdes.def > configs/lx2160a_serdes.rcwi
+    envsubst < configs/lx2160a_timings.def > configs/lx2160a_timings.rcwi
+    )
   '';
 
   installPhase = ''
-    mkdir -p $out/lx2160acex7/XGGFF_PP_HHHH_RR_19_5_2
-    cp -v XGGFF_PP_HHHH_RR_19_5_2/*.bin $out/lx2160acex7/XGGFF_PP_HHHH_RR_19_5_2
+    mkdir $out
+    cp -r . $out/lx2160acex7
   '';
 }

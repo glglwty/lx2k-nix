@@ -2,13 +2,13 @@
 
 stdenv.mkDerivation rec {
   name = "ddr-phy-bin";
-  version = "LSDK-19.09";
+  version = "v2019.04";
 
   src = fetchFromGitHub {
     owner = "NXP";
     repo = "ddr-phy-binary";
     rev = version;
-    sha256 = "0z6h8cb7ms0vhdrwbhk79cnmibvvk8y912qds57c0rs5i95z11rs";
+    sha256 = "19l4g5avqxp4wanm6sjm04fac5ahz9za1hxmhdyf8lp25nf46yjk";
   };
 
   nativeBuildInputs = [ atf ];

@@ -40,6 +40,10 @@ self: super: {
     qoriq-mc-bin = self.callPackage ./qoriq-mc-bin { };
 
     mc-utils = self.callPackage ./mc-utils { };
+
+    edk2 = callPackage ./edk2.nix {};
+    tianocore = callPackage ./tianocore.nix {};
+    uefi = callPackage ./uefi.nix {};
   });
 
   ubootImage = self.lx2k.callPackage ./ubootImage.nix { };
