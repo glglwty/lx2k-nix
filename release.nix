@@ -17,8 +17,8 @@
 {
   inherit (pkgs) linux_lx2k lx2k;
 
-  sdImage = (pkgs.nixos ( { lib, ... }: {
-    imports = [ (pkgs.path + /nixos/modules/installer/cd-dvd/sd-image-aarch64.nix) ];
+  isoImage = (pkgs.nixos ( { lib, ... }: {
+    imports = [ (pkgs.path + /nixos/modules/installer/cd-dvd/installation-cd-minimal.nix) ];
 
     # use vendor kernel
     boot.kernelPackages = pkgs.linuxPackages_lx2k_mainline;
@@ -29,5 +29,5 @@
 
     # take from upstream
     boot.kernelParams = lib.mkForce [ "console=ttyAMA0,115200" "earlycon=pl011,mmio32,0x21c0000" "pci=pcie_bus_perf" ];
-  })).config.system.build.sdImage;
+  })).config.system.build.isoImage;
 }

@@ -15,11 +15,11 @@ in one image.
 ** Build and write the sdImage to USB
 
 #+BEGIN_SRC sh
-  # Build the sdImage
-  nix-build release.nix -A sdImage -o sdImage
+  # Build the isoImage
+  nix-build release.nix -A isoImage -o isoImage
 
   # Write to storage
-  cat sdImage/sd-image/*.img > /dev/$usb
+  cat isoImage/iso-image/*.img > /dev/$usb
 #+END_SRC
 
 ** Build and write the bootloader to microSD
@@ -53,15 +53,6 @@ Requires some dependencies:
 #+END_SRC
 
 * Future work
-
-** TODO Make a squashfs image
-
-Distributing disk images is strange, especialy when devices have
-onboard emmc, sata, usb and nvme. A squashfs image would boot from
-read-only media and allow =nixos-install= onto their desired target.
-
-It's also much smaller.
-
 
 ** TODO Improve self-hosting
 
