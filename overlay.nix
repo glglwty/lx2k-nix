@@ -29,8 +29,6 @@ self: super: {
   };
 
   lx2k = self.lib.makeScope self.newScope (self: with self; {
-    uboot = self.callPackage ./u-boot { };
-
     rcw = self.callPackage ./rcw { };
 
     atf = self.callPackage ./atf { };
