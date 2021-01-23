@@ -8,10 +8,9 @@ image with vendor kernel but buildable with Nix.
 * Usage
 
 To boot this configuration, you require a microSD card for uboot, and
-USB (or similar) storage for NixOS. This is required due to the
-write-enable line floating on the hardware which prevents writing to
-the microSD slot, and NixOS's sdImage assuming the device it boots
-from is writeable.
+USB (or similar) storage for NixOS. This is required because I haven't
+yet written an image expression that combines the firmware and the OS
+in one image.
 
 ** Build and write the sdImage to USB
 
@@ -27,10 +26,10 @@ from is writeable.
 
 #+BEGIN_SRC sh
   # Build the uboot image
-  nix-build release.nix -A ubootImage -o ubootImage
+  nix-build release.nix -A uefi -o uefi.img
 
   # Write to microSD storage
-  cat ubootImage/*.img > /dev/$microSD
+  cat uefi.img > /dev/$microSD
 #+END_SRC
 
 The default memory speed is 3200mhz. If your memory is slower, you
@@ -40,61 +39,6 @@ will need to specify a compatible speed with:
   nix-build release.nix -A ubootImage -o ubootImage --arg ddrSpeed 2600
 #+END_SRC
 ** Insert both images and boot
-
-Note that uboot from upstream has some issues and
-incompatibilities. *These have been patched into the uboot
-configuration, so everything should work with no additional effort.*
-
-*** ramdisk_addr_r unset
-
-This causes ramdisk loading to fail. Set this explicitly via =setenv=
-
-#+BEGIN_EXAMPLE
-  setenv ramdisk_addr_r 84000000
-#+END_EXAMPLE
-
-*** fdtfile unset
-
-This allows the usage of =FDTDIR= in extlinux.conf, and should be set via
-
-#+BEGIN_EXAMPLE
-  setenv fdtfile freescale/fsl-lx2160a-cex7.dtb
-#+END_EXAMPLE
-
-OR, if you have a newer kernel,
-
-#+BEGIN_EXAMPLE
-  setenv fdtfile freescale/fsl-lx2160a-honeycomb.dtb
-#+END_EXAMPLE
-
-*** scriptaddr leaves 4k for extlinux.conf
-
-This is very easy to overrun in NixOS, and results in the ethernet
-firmware failing to load. The vendor uboot configuration allows 4K,
-while the recomended value for this is 1MB.
-
-#+BEGIN_EXAMPLE
-  setenv scriptaddr 0x83800000
-#+END_EXAMPLE
-
-*** bonus: boot_targets
-
-This can be set to only scan the device you want to boot.
-
-#+BEGIN_EXAMPLE
-  setenv boot_targets nvme0
-#+END_EXAMPLE
-
-*** Full example of booting from the nvme storage
-
-#+BEGIN_EXAMPLE
-  setenv scriptaddr 0x83800000
-  setenv ramdisk_addr_r 84000000
-  setenv fdtfile freescale/fsl-lx2160a-cex7.dtb
-  setenv boot_targets nvme0
-#+END_EXAMPLE
-
-*** Good luck!
 
 * Notes
 
@@ -118,9 +62,6 @@ read-only media and allow =nixos-install= onto their desired target.
 
 It's also much smaller.
 
-** TODO uefi support
-
-The source repo has uefi build scripts, which were completely ignored.
 
 ** TODO Improve self-hosting
 
