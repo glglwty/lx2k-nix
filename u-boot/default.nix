@@ -1,6 +1,7 @@
 { buildUBoot, fetchgit, lib }:
 
 buildUBoot {
+  name = "u-boot-lx2k";
   defconfig = "lx2160acex7_tfa_defconfig";
   filesToInstall = [ "u-boot.bin" ];
 
