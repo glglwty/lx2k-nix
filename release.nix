@@ -1,4 +1,4 @@
-{ system ? builtins.currentSystem
+{ system ? "aarch64-linux" # cross-compilation doesn't work currently
 , pkgs ? import <nixpkgs> {
     overlays = [
       (import ./overlay.nix)
