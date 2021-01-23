@@ -30,8 +30,4 @@
     # take from upstream
     boot.kernelParams = lib.mkForce [ "console=ttyAMA0,115200" "earlycon=pl011,mmio32,0x21c0000" "default_hugepagesz=1024m" "hugepagesz=1024m" "hugepages=2" "pci=pcie_bus_perf" ];
   })).config.system.build.sdImage;
-
-  ubootImage = pkgs.lx2k.callPackage ./ubootImage.nix {
-    atf = pkgs.lx2k.atf.override { inherit ddrSpeed; };
-  };
 }
