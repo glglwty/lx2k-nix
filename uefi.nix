@@ -2,7 +2,6 @@
 let
   atf-with-tianocore = atf.override {
     bl33 = "${tianocore}/FV/LX2160ACEX7_EFI.fd";
-    ddrSpeed = 2400;
   };
 in runCommandNoCC "lx2k-firmware-${target}.bin" {} ''
   truncate -s 8M $out

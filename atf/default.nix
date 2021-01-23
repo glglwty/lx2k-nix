@@ -1,17 +1,12 @@
-{ stdenv, lib, fetchFromGitHub, uboot, rcw, openssl,
-  ddrSpeed ? 3200,
-  serdes ? "8_5_2",
+{ stdenv, lib, fetchFromGitHub, tianocore, rcw, openssl,
   bootMode ? "sd",
-  bl33 ? "${uboot}/u-boot.bin",
+  bl33 ? "${tianocore}/FV/LX2160ACEX7_EFI.fd",
 }:
 
-assert lib.elem ddrSpeed [ 2400 2600 2900 3200 ];
 assert lib.elem bootMode [ "sd" "spi" ];
 
 let
   atfBoot = if bootMode == "sd" then "sd" else "flexspi_nor";
-
-  speed = "2000_700_${toString ddrSpeed}";
 in
 
 stdenv.mkDerivation rec {
@@ -53,6 +48,6 @@ stdenv.mkDerivation rec {
   '';
 
   passthru = {
-    inherit atfBoot serdes;
+    inherit atfBoot;
   };
 }
