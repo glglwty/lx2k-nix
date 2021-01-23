@@ -49,7 +49,7 @@ edk2 = stdenv.mkDerivation {
 
       buildPhase = ''
         runHook preBuild
-        build -a AARCH64 -b RELEASE -t GCC5 -p ${projectDscPath} -n $NIX_BUILD_CORES $buildFlags
+        build -a AARCH64 -b ${attrs.releaseType or "RELEASE"} -t GCC5 -p ${projectDscPath} -n $NIX_BUILD_CORES
         runHook postBuild
       '';
 
