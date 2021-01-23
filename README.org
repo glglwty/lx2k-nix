@@ -19,7 +19,7 @@ in one image.
   nix-build release.nix -A isoImage -o isoImage
 
   # Write to storage
-  cat isoImage/iso-image/*.img > /dev/$usb
+  cat isoImage/iso/*.iso > /dev/$usb
 #+END_SRC
 
 ** Build and write the bootloader to microSD
