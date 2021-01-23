@@ -26,6 +26,9 @@ self: super: {
     };
     version = "5.10.5";
     kernelPatches = [];
+    structuredExtraConfig = with super.lib.kernel; {
+      CGROUP_FREEZER = yes;
+    };
   };
 
   lx2k = self.lib.makeScope self.newScope (self: with self; {
