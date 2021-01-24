@@ -26,8 +26,8 @@ installer image (typically loaded on a USB stick).
 To get started, build the required images:
 
 ```bash
-nix-build release.nix -A isoImage -o isoImage
-nix-build release.nix -A lx2k.uefi -o uefi.img
+nix-build -A lx2k.isoImage -o isoImage --arg ddrSpeed 3200
+nix-build -A lx2k.uefi -o uefi.img
 ```
 
 Use `lsblk` to take a look at the block devices within `/dev`:

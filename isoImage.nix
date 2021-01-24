@@ -15,7 +15,6 @@
 }:
 
 {
-  inherit (pkgs) linux_lx2k lx2k;
 
   isoImage = (pkgs.nixos ( { lib, ... }: {
     imports = [ (pkgs.path + /nixos/modules/installer/cd-dvd/installation-cd-minimal.nix) ];

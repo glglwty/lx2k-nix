@@ -44,7 +44,9 @@ self: super: {
 
     edk2 = callPackage ./edk2.nix {};
     tianocore = callPackage ./tianocore.nix {};
+
     uefi = callPackage ./uefi.nix {};
+    isoImage = self.callPackage ./isoImage.nix { inherit ddrSpeed; };
   });
 
   ubootImage = self.lx2k.callPackage ./ubootImage.nix { };
