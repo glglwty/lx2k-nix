@@ -6,7 +6,6 @@
 , openssl
 , bootMode ? "sd"
 , bl33 ? "${tianocore}/FV/LX2160ACEX7_EFI.fd"
-,
 }:
 
 assert lib.elem bootMode [ "sd" "spi" ];

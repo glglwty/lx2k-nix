@@ -33,7 +33,7 @@ self: super: {
   };
 
   lx2k = self.lib.makeScope self.newScope (self: with self; {
-    rcw = self.callPackage ./rcw { };
+    rcw = self.callPackage ./rcw { inherit ddrSpeed; };
 
     atf = self.callPackage ./atf { };
 
@@ -47,7 +47,7 @@ self: super: {
     tianocore = callPackage ./tianocore.nix { };
 
     uefi = callPackage ./uefi.nix { };
-    isoImage = self.callPackage ./isoImage.nix { inherit ddrSpeed; };
+    isoImage = self.callPackage ./isoImage.nix { };
   });
 
   ubootImage = self.lx2k.callPackage ./ubootImage.nix { };

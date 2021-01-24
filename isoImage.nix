@@ -1,17 +1,5 @@
 { system ? "aarch64-linux" # cross-compilation doesn't work currently
-, pkgs ? import <nixpkgs> {
-    overlays = [
-      (import ./overlay.nix)
-      (self: super: {
-        lx2k = super.lx2k.overrideScope' (self: super: {
-          rcw = super.rcw.override { inherit ddrSpeed; };
-        });
-      })
-    ];
-    inherit system;
-    ${if system == "aarch64-linux" then null else "crossSystem"} = "aarch64-linux";
-  }
-, ddrSpeed ? 3200
+, pkgs
 }:
 
 {
