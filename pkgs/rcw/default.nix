@@ -3,7 +3,7 @@
 , fetchFromGitHub
 , python3
 , gettext
-, ddrSpeed ? 3200
+, ddrSpeed
 }:
 
 assert lib.elem ddrSpeed [ 2400 2600 2900 3200 ];

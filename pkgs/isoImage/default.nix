@@ -1,14 +1,11 @@
-{ system ? "aarch64-linux" # cross-compilation doesn't work currently
-, pkgs
-}:
+{ nixos, lib, path, linuxPackages_lx2k_mainline }:
 
 {
-
-  isoImage = (pkgs.nixos ({ lib, ... }: {
-    imports = [ (pkgs.path + /nixos/modules/installer/cd-dvd/installation-cd-minimal.nix) ];
+  isoImage = (nixos ({ lib, ... }: {
+    imports = [ (path + /nixos/modules/installer/cd-dvd/installation-cd-minimal.nix) ];
 
     # use vendor kernel
-    boot.kernelPackages = pkgs.linuxPackages_lx2k_mainline;
+    boot.kernelPackages = linuxPackages_lx2k_mainline;
 
     # disable anything we don't need, like zfs
     boot.initrd.supportedFilesystems = lib.mkForce [ "ext4" ];

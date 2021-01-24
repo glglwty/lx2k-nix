@@ -10,9 +10,13 @@ firmwares for the following machines:
 Before starting, you should ensure you have:
 
 * Any additional required hardware is properly installed.
-  The default memory speed is 3200mhz. If your memory is slower, you will need to specify a different speed.
 * A Linux machine with Nix installed.
-* FTDI drivers configured according to https://developer.solid-run.com/knowledge-base/serial-connection/.
+  If not on an aarch64 machine, set this (or equivalent): 
+  ```nix
+  # /etc/nixos/configuration.nix
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+  ```
+* FTDI drivers configured according to [instructions](https://developer.solid-run.com/knowledge-base/serial-connection/).
   (NixOS default kernel users are already covered!)
 * A microUSB to USB cable. ([Ex][parts-microusb-to-usb-cable-ex])
 * A microSD card. ([Ex][parts-microsd-card-ex])
@@ -25,9 +29,12 @@ installer image (typically loaded on a USB stick).
 
 To get started, build the required images:
 
+> If you have a different RAM speed than `3200`, choose that speed instead.
+> (Eg. `nix-build -A lx2k.uefi.ddr-2400 -o uefi.img`)
+
 ```bash
-nix-build -A lx2k.isoImage -o isoImage --arg ddrSpeed 3200
-nix-build -A lx2k.uefi -o uefi.img
+nix-build -A lx2k.isoImage -o isoImage
+nix-build -A lx2k.uefi.ddr-3200 -o uefi.img
 ```
 
 Use `lsblk` to take a look at the block devices within `/dev`:
@@ -66,15 +73,37 @@ $ dmesg | grep FTDI
 [...] usb 3-3: FTDI USB Serial Device converter now attached to ttyUSB0
 ```
 
-Modify the `kermit-config`'s `set line /dev/ttyUSB${NUMBER}` option to represent the `ttyUSB${NUMBER}` shown in `dmesg` above.
+Plug the microUSB side of the microUSB cable into the port labelled CONSOLE (not 
+"MANAGEMENT") on the board. It should show in `dmesg` as `FTDI`, not `STM32`.
 
 ```bash
-$ sudo nix-shell -p --run "kermit kermit-config"
-Connecting to /dev/ttyUSB0, speed 115200
- Escape character: Ctrl-\ (ASCII 28, FS): enabled
-Type the escape character followed by C to get back,
-or followed by ? to see other options.
-----------------------------------------------------
+$ nix-shell -p picocom --run "sudo picocom /dev/ttyUSB0 -b 115200"
+picocom v3.2a
+
+port is        : /dev/ttyUSB0
+flowcontrol    : none
+baudrate is    : 115200
+parity is      : none
+databits are   : 8
+stopbits are   : 1
+escape is      : C-a
+local echo is  : no
+noinit is      : no
+noreset is     : no
+hangup is      : no
+nolock is      : no
+send_cmd is    : /nix/store/91ycwnp2a7qa37lzjfgvvwlzq161qprs-lrzsz-0.12.20/bin/sz -vv
+receive_cmd is : rz -vv -E
+imap is        : 
+omap is        : 
+emap is        : crcrlf,delbs,
+logfile is     : none
+initstring     : none
+exit_after is  : not set
+exit is        : no
+
+Type [C-a] [C-h] to see available commands
+Terminal ready
 
 ```
 
@@ -83,12 +112,8 @@ Next the fun part! **Hit the power button 🚀!**
 With any luck, something similar to the following will show:
 
 ```bash
-$ sudo nix-shell -p --run "kermit kermit-config"
-Connecting to /dev/ttyUSB0, speed 115200
- Escape character: Ctrl-\ (ASCII 28, FS): enabled
-Type the escape character followed by C to get back,
-or followed by ? to see other options.
-----------------------------------------------------
+# ...
+Terminal ready
 NOTICE:  BL2: v1.5(release):
 NOTICE:  BL2: Built : 00:00:00, Jan  1 1980
 NOTICE:  UDIMM KHX3200C20S4/32GX 
