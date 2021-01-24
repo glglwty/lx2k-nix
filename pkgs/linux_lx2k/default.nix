@@ -3,7 +3,19 @@
 , fetchgit
 , linuxManualConfig
 , features ? { }
-, kernelPatches ? [ ]
+, kernelPatches ? self.linux_4_19.kernelPatches ++ (
+      map
+        (p: {
+          name = builtins.baseNameOf p;
+          patch = p;
+        }) [
+        ./patches/0001-arm64-dts-lx2160a-add-lx2160acex7-device-tree-build.patch
+        ./patches/0002-arm64-dts-lx2160a-add-lx2160acex7-device-tree.patch
+        ./patches/0004-pci-accept-pcie-base-class-id-0x0.patch
+        ./patches/0005-arm64-dts-lx2160a-cex7-add-ltc3882-support.patch
+        ./patches/0006-arm64-dts-lx2160a-cex7-add-on-module-eeproms.patch
+      ]
+    )
 , randstructSeed ? null
 }:
 
