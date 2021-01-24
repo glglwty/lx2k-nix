@@ -1,11 +1,11 @@
-{ nixos, lib, path, linuxPackages_lx2k_mainline }:
+{ nixos, lib, path, linuxPackages_lx2k }:
 
 {
   isoImage = (nixos ({ lib, ... }: {
     imports = [ (path + /nixos/modules/installer/cd-dvd/installation-cd-minimal.nix) ];
 
     # use vendor kernel
-    boot.kernelPackages = linuxPackages_lx2k_mainline;
+    boot.kernelPackages = linuxPackages_lx2k;
 
     # disable anything we don't need, like zfs
     boot.initrd.supportedFilesystems = lib.mkForce [ "ext4" ];

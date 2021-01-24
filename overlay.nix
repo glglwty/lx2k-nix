@@ -1,8 +1,6 @@
 self: super: {
-  linux_lx2k = super.callPackage ./pkgs/linux_lx2k { };
-  linuxPackages_lx2k = self.linuxPackagesFor self.linux_lx2k;
-  linuxPackages_lx2k_mainline = super.linuxPackagesFor self.linux_lx2k_mainline;
-  linux_lx2k_mainline = self.buildLinux {
+  linuxPackages_lx2k = super.linuxPackagesFor self.linux_lx2k;
+  linux_lx2k = self.buildLinux {
     src = super.fetchFromGitHub {
       owner = "SolidRun";
       repo = "linux-stable";
