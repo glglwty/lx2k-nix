@@ -1,11 +1,16 @@
-{ stdenv, runCommand, fetchgit, linuxManualConfig,
-  features ? {}, kernelPatches ? [], randstructSeed ? null }:
+{ stdenv
+, runCommand
+, fetchgit
+, linuxManualConfig
+, features ? { }
+, kernelPatches ? [ ]
+, randstructSeed ? null
+}:
 
 # Additional features cannot be added to this kernel
-assert features == {};
-
+assert features == { };
 let
-  passthru = { features = {}; };
+  passthru = { features = { }; };
 
   drv = linuxManualConfig ({
     inherit stdenv kernelPatches;
@@ -25,5 +30,4 @@ let
   } // stdenv.lib.optionalAttrs (randstructSeed != null) { inherit randstructSeed; });
 
 in
-
 stdenv.lib.extendDerivation true passthru drv

@@ -1,22 +1,17 @@
 { runCommand, lib, uboot, atf, ddr-phy-bin, qoriq-mc-bin, mc-utils }:
-
 let
   serdes = atf.serdes;
 
-  inherit (
-    if lib.hasPrefix "13_" serdes then
-      { dpc = "dpc-dual-100g.dtb"; dpl = "dpl-eth.dual-100g.19.dtb"; }
-    else if lib.hasPrefix "8_" serdes then
-      { dpc = "dpc-8_x_usxgmii.dtb"; dpl = "dpl-eth.8x10g.19.dtb"; }
-    else if lib.hasPrefix "20_" serdes then
-      { dpc = "dpc-dual-40g.dtb"; dpl = "dpl-eth.dual-40g.19.dtb"; }
-    else (throw "Unexpected serdes value")
-  ) dpl dpc;
+  inherit (if lib.hasPrefix "13_" serdes then
+    { dpc = "dpc-dual-100g.dtb"; dpl = "dpl-eth.dual-100g.19.dtb"; }
+  else if lib.hasPrefix "8_" serdes then
+    { dpc = "dpc-8_x_usxgmii.dtb"; dpl = "dpl-eth.8x10g.19.dtb"; }
+  else if lib.hasPrefix "20_" serdes then
+    { dpc = "dpc-dual-40g.dtb"; dpl = "dpl-eth.dual-40g.19.dtb"; }
+  else (throw "Unexpected serdes value")) dpl dpc;
 in
-
-runCommand "uboot-image" {
-
-} ''
+runCommand "uboot-image"
+{ } ''
   mkdir $out
   img=$out/uboot.img
   truncate -s 64M $img

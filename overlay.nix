@@ -1,10 +1,11 @@
 self: super: {
   linux_lx2k = super.callPackage ./linux_lx2k {
     kernelPatches = self.linux_4_19.kernelPatches ++ (
-      map (p: {
-        name = builtins.baseNameOf p;
-        patch = p;
-      }) [
+      map
+        (p: {
+          name = builtins.baseNameOf p;
+          patch = p;
+        }) [
         ./patches/linux/0001-arm64-dts-lx2160a-add-lx2160acex7-device-tree-build.patch
         ./patches/linux/0002-arm64-dts-lx2160a-add-lx2160acex7-device-tree.patch
         ./patches/linux/0004-pci-accept-pcie-base-class-id-0x0.patch
@@ -25,7 +26,7 @@ self: super: {
       sha256 = "1cq36vpsd68g144gn7f3jjkl2bwibqv7nrrrjgvkdj1lfijcwm14";
     };
     version = "5.10.5";
-    kernelPatches = [];
+    kernelPatches = [ ];
     structuredExtraConfig = with super.lib.kernel; {
       CGROUP_FREEZER = yes;
     };
@@ -42,10 +43,10 @@ self: super: {
 
     mc-utils = self.callPackage ./mc-utils { };
 
-    edk2 = callPackage ./edk2.nix {};
-    tianocore = callPackage ./tianocore.nix {};
+    edk2 = callPackage ./edk2.nix { };
+    tianocore = callPackage ./tianocore.nix { };
 
-    uefi = callPackage ./uefi.nix {};
+    uefi = callPackage ./uefi.nix { };
     isoImage = self.callPackage ./isoImage.nix { inherit ddrSpeed; };
   });
 

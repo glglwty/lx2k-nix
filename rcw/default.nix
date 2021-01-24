@@ -1,11 +1,16 @@
-{ stdenv, lib, fetchFromGitHub, python3, gettext
+{ stdenv
+, lib
+, fetchFromGitHub
+, python3
+, gettext
 , ddrSpeed ? 3200
 }:
 
 assert lib.elem ddrSpeed [ 2400 2600 2900 3200 ];
 let
   memSpeed = lib.substring 0 2 (toString ddrSpeed);
-in stdenv.mkDerivation rec {
+in
+stdenv.mkDerivation rec {
   pname = "rcw-mem-${toString ddrSpeed}MHz";
   version = "LSDK-20.04-sr";
 
