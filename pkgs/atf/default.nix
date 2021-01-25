@@ -1,14 +1,17 @@
-{ stdenv, lib, fetchFromGitHub, tianocore, rcw, openssl,
-  bootMode ? "sd",
-  bl33 ? "${tianocore}/FV/LX2160ACEX7_EFI.fd",
+{ stdenv
+, lib
+, fetchFromGitHub
+, tianocore
+, rcw
+, openssl
+, bootMode ? "sd"
+, bl33 ? "${tianocore}/FV/LX2160ACEX7_EFI.fd"
 }:
 
 assert lib.elem bootMode [ "sd" "spi" ];
-
 let
   atfBoot = if bootMode == "sd" then "sd" else "flexspi_nor";
 in
-
 stdenv.mkDerivation rec {
   pname = "atf";
   version = "unstable-2020-08-31";
@@ -32,7 +35,9 @@ stdenv.mkDerivation rec {
     "GENERATE_COT=0"
     "BOOT_MODE=${atfBoot}"
     "SECURE_BOOT=false"
-    "all" "fip" "pbl"
+    "all"
+    "fip"
+    "pbl"
   ];
 
   hardeningDisable = [ "all" ];
