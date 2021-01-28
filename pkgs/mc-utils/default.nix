@@ -11,7 +11,7 @@ stdenv.mkDerivation rec {
   };
 
   patches = [
-    ../patches/mc-utils/0001-lx2160acex7-add-8x10G-dual-40G-and-dual-100G-DPL-DPC.patch
+    ./patches/0001-lx2160acex7-add-8x10G-dual-40G-and-dual-100G-DPL-DPC.patch
   ];
 
   nativeBuildInputs = [ dtc ];
