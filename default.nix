@@ -9,5 +9,5 @@
 }:
 
 {
-  inherit (pkgs) linux_lx2k lx2k;
+  inherit (pkgs) linux_lx2k linuxPackages_lx2k lx2k lx2k-2400 lx2k-2600 lx2k-2900 lx2k-3200;
 }

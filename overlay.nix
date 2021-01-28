@@ -14,35 +14,15 @@ self: super: {
     };
   };
   lx2k = self.lib.makeScope self.newScope (self: with self; {
-    # A different UEFI must be prepared depending on the RAM speed.
-    rcw = {
-      ddr-2400 = self.callPackage ./pkgs/rcw { ddrSpeed = 2400; };
-      ddr-2600 = self.callPackage ./pkgs/rcw { ddrSpeed = 2600; };
-      ddr-2900 = self.callPackage ./pkgs/rcw { ddrSpeed = 2900; };
-      ddr-3200 = self.callPackage ./pkgs/rcw { ddrSpeed = 3200; };
-    };
+    ddrSpeed = 2400;
 
-    atf = {
-      ddr-2400 = self.callPackage ./pkgs/atf { rcw = rcw.ddr-2400; };
-      ddr-2600 = self.callPackage ./pkgs/atf { rcw = rcw.ddr-2600; };
-      ddr-2900 = self.callPackage ./pkgs/atf { rcw = rcw.ddr-2900; };
-      ddr-3200 = self.callPackage ./pkgs/atf { rcw = rcw.ddr-3200; };
-    };
+    rcw = self.callPackage ./pkgs/rcw { };
 
-    ddr-phy-bin = {
-      ddr-2400 = self.callPackage ./pkgs/ddr-phy-bin { atf = atf.ddr-2400; };
-      ddr-2600 = self.callPackage ./pkgs/ddr-phy-bin { atf = atf.ddr-2600; };
-      ddr-2900 = self.callPackage ./pkgs/ddr-phy-bin { atf = atf.ddr-2900; };
-      ddr-3200 = self.callPackage ./pkgs/ddr-phy-bin { atf = atf.ddr-3200; };
-    };
+    atf = self.callPackage ./pkgs/atf { };
 
-    uefi = {
-      ddr-2400 = self.callPackage ./pkgs/uefi { atf = atf.ddr-2400; ddr-phy-bin = ddr-phy-bin.ddr-2400; };
-      ddr-2600 = self.callPackage ./pkgs/uefi { atf = atf.ddr-2600; ddr-phy-bin = ddr-phy-bin.ddr-2600; };
-      ddr-2900 = self.callPackage ./pkgs/uefi { atf = atf.ddr-2900; ddr-phy-bin = ddr-phy-bin.ddr-2900; };
-      ddr-3200 = self.callPackage ./pkgs/uefi { atf = atf.ddr-3200; ddr-phy-bin = ddr-phy-bin.ddr-3200; };
-    };
+    ddr-phy-bin = self.callPackage ./pkgs/ddr-phy-bin { };
 
+    uefi = self.callPackage ./pkgs/uefi { };
 
     qoriq-mc-bin = self.callPackage ./pkgs/qoriq-mc-bin { };
 
@@ -53,5 +33,11 @@ self: super: {
     tianocore = callPackage ./pkgs/tianocore { };
 
     isoImage = self.callPackage ./pkgs/isoImage { };
+
   });
+
+  lx2k-2400 = self.lx2k;
+  lx2k-2600 = self.lx2k.overrideScope' (_: _: { ddrSpeed = 2600; });
+  lx2k-2900 = self.lx2k.overrideScope' (_: _: { ddrSpeed = 2900; });
+  lx2k-3200 = self.lx2k.overrideScope' (_: _: { ddrSpeed = 3200; });
 }
