@@ -29,12 +29,12 @@ installer image (typically loaded on a USB stick).
 
 To get started, build the required images:
 
-> If you have a different RAM speed than `3200`, choose that speed instead.
-> (Eg. `nix-build -A lx2k.uefi.ddr-2400 -o uefi.img`)
+> If you have a different RAM speed than 2400MHz, choose that speed instead.
+> (Eg. `nix-build -A lx2k-3200.uefi -o uefi.img`)
 
 ```bash
 nix-build -A lx2k.isoImage -o isoImage
-nix-build -A lx2k.uefi.ddr-3200 -o uefi.img
+nix-build -A lx2k.uefi -o uefi.img
 ```
 
 Use `lsblk` to take a look at the block devices within `/dev`:
