@@ -5,10 +5,10 @@ self: super: {
     src = super.fetchFromGitHub {
       owner = "SolidRun";
       repo = "linux-stable";
-      rev = "4c71505dce5df9254daacb96c7a869741289a461";
-      sha256 = "1mqv6xvijrafkjf03bwjvfrcvd4h4576zbv8jpipfjzcxg6894zf";
+      rev = "a495d1d1543d6602b659e5629576eacd0140748f";
+      sha256 = "1ky5kwlcm63qlnyhsifqd80w7gf5g2hh1n9r6n2mfc0y8s7vs90i";
     };
-    version = "5.10.23";
+    version = "5.15.10";
     kernelPatches = [ ];
     structuredExtraConfig = with super.lib.kernel; {
       CGROUP_FREEZER = yes;

@@ -8,8 +8,10 @@
     boot.kernelPackages = linuxPackages_lx2k;
 
     # disable anything we don't need, like zfs
-    boot.initrd.supportedFilesystems = lib.mkForce [ "ext4" ];
-    boot.supportedFilesystems = lib.mkForce [ "ext4" ];
+    #boot.initrd.supportedFilesystems = lib.mkForce [ "ext4" ];
+    #boot.supportedFilesystems = lib.mkForce [ "ext4" ];
+    boot.supportedFilesystems = [ "zfs" ];
+    boot.initrd.supportedFilesystems = ["zfs"]; # boot from zfs
 
     # take from upstream
     boot.kernelParams = [
